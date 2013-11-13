@@ -21,6 +21,8 @@ namespace PizzaGuy
             Vector2 velocity) : base(location, texture, initialFrame, velocity)
         {
         }
+
+        PizzaGuy pacman = new PizzaGuy((300, 300), PacmanSprites);
     }
     
 }

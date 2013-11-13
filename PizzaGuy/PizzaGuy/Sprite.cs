@@ -18,7 +18,9 @@ namespace PizzaGuy
             Vector2 location,
             Texture2D texture,
             Rectangle initialFrame,
-            Vector2 velocity);
+            Vector2 velocity)
+        {
+        }
        
     }
 }
