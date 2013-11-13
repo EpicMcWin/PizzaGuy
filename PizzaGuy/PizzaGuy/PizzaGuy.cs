@@ -14,15 +14,18 @@ namespace PizzaGuy
 {
     class PizzaGuy : Sprite
     {
+
         public PizzaGuy(
             Vector2 location,
             Texture2D texture,
             Rectangle initialFrame,
             Vector2 velocity) : base(location, texture, initialFrame, velocity)
-        {
+        {  
         }
 
-        PizzaGuy pacman = new PizzaGuy((300, 300), PacmanSprites);
+        
+        
+        
     }
     
 }

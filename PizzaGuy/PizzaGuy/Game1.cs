@@ -19,6 +19,7 @@ namespace PizzaGuy
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D PacmanSheet;
+        PizzaGuy pacman;
 
         public Game1()
         {
@@ -47,9 +48,9 @@ namespace PizzaGuy
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            PacmanSheet = new Texture2D<"PacmanSprites">;
+            PacmanSheet = Content.Load<Texture2D>("PacmanSprites");
 
-            // TODO: use this.Content to load your game content here
+            pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(173, 108, 85, 91), Vector2.Zero); 
         }
 
         /// <summary>
@@ -66,6 +67,41 @@ namespace PizzaGuy
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        /// 
+
+
+        private void HandleKeyboardInput(KeyboardState keyState)
+        {
+
+            if (keyState.IsKeyDown(Keys.Up))
+            {
+                pacman.Velocity = new Vector2(0, -100);
+            }
+
+            else if(keyState.IsKeyDown(Keys.Down))
+            {
+                pacman.Velocity = new Vector2(0, 100);
+            }
+
+            else if (keyState.IsKeyDown(Keys.Left))
+            {
+                pacman.Velocity = new Vector2(-100, 0);
+            }
+
+            else if (keyState.IsKeyDown(Keys.Right))
+            {
+                pacman.Velocity = new Vector2(100, 0);
+            }
+
+            else
+            {
+                pacman.Velocity = new Vector2(0, 0);
+            }
+        }
+
+            
+
+
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
@@ -73,7 +109,8 @@ namespace PizzaGuy
                 this.Exit();
 
             // TODO: Add your update logic here
-
+            HandleKeyboardInput(Keyboard.GetState());
+            pacman.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -86,8 +123,11 @@ namespace PizzaGuy
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
-
+            spriteBatch.Begin();
+            pacman.Draw(spriteBatch);
+            spriteBatch.End();
             base.Draw(gameTime);
+            
         }
     }
 }
