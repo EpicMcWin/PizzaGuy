@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace PizzaGuy
 {
+
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -51,8 +53,11 @@ namespace PizzaGuy
             spriteBatch = new SpriteBatch(GraphicsDevice);
             PacmanSheet = Content.Load<Texture2D>("PacmanSprites");
 
-            pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(173, 108, 85, 91), Vector2.Zero);
-            pacman.AddFrame(new Rectangle(103, 106, 66, 95));
+            pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(114, 13, 38, 39), Vector2.Zero);
+            pacman.AddFrame(new Rectangle(18, 13, 34, 37));
+            pacman.AddFrame(new Rectangle(74, 13, 27, 38));
+            pacman.AddFrame(new Rectangle(18, 13, 34, 37));
+
         }
 
         /// <summary>
@@ -78,28 +83,43 @@ namespace PizzaGuy
             if (keyState.IsKeyDown(Keys.Up))
             {
                 pacman.Velocity = new Vector2(0, -100);
-                pacman.Rotation = 4.7f;
+                pacman.Rotation = MathHelper.PiOver2;
                 destination = pacman.Location - new Vector2(0, 32);
-                if 
+
+                // direction
+                pacman.direction = Direction.UP;
             }
 
             else if(keyState.IsKeyDown(Keys.Down))
             {
                 pacman.Velocity = new Vector2(0, 100);
-                pacman.Rotation = 1.55f;
+                pacman.Rotation = -MathHelper.PiOver2;
+                destination = pacman.Location + new Vector2(0, 32);
             }
 
             else if (keyState.IsKeyDown(Keys.Left))
             {
                 pacman.Velocity = new Vector2(-100, 0);
-                pacman.Rotation = 3.15f;
+                pacman.Rotation = 0f;
+                destination = pacman.Location - new Vector2(32, 0);
             }
 
             else if (keyState.IsKeyDown(Keys.Right))
             {
                 pacman.Velocity = new Vector2(100, 0);
-                pacman.Rotation = 0;
+                pacman.Rotation = MathHelper.Pi;
+                destination = pacman.Location + new Vector2(32, 0);
             }
+
+            if (pacman.Velocity.X > 0 && pacman.Location.X >= destination.X ||
+                pacman.Velocity.X < 0 && pacman.Location.X <= destination.X)
+            {
+                pacman.Velocity = new Vector2(0, 0);
+
+
+            }
+          
+
             imposeMovementLimits();
         }
 

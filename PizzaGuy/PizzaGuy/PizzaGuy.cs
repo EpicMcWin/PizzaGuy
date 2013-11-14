@@ -12,8 +12,17 @@ using Microsoft.Xna.Framework.Media;
 
 namespace PizzaGuy
 {
+    enum Direction
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+    
     class PizzaGuy : Sprite
     {
+        public Direction direction;
 
         public PizzaGuy(
             Vector2 location,
@@ -23,7 +32,10 @@ namespace PizzaGuy
         {  
         }
 
-        
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
         
         
     }
