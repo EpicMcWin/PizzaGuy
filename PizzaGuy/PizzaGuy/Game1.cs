@@ -53,7 +53,7 @@ namespace PizzaGuy
             spriteBatch = new SpriteBatch(GraphicsDevice);
             PacmanSheet = Content.Load<Texture2D>("PacmanSprites");
 
-            pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(114, 13, 38, 39), Vector2.Zero);
+            pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(114, 13, 38, 39), new Vector2(32,0));
             pacman.AddFrame(new Rectangle(18, 13, 34, 37));
             pacman.AddFrame(new Rectangle(74, 13, 27, 38));
             pacman.AddFrame(new Rectangle(18, 13, 34, 37));
@@ -133,17 +133,14 @@ namespace PizzaGuy
             }
 
             
-            UpdateDirection();
+            
             
             if (pacman.Velocity.X > 0 && pacman.Location.X >= destination.X ||
                 pacman.Velocity.X < 0 && pacman.Location.X <= destination.X || 
                 pacman.Velocity.Y > 0 && pacman.Location.Y >= destination.Y ||
                 pacman.Velocity.Y < 0 && pacman.Location.Y <= destination.Y)
-            {
-                pacman.Velocity = new Vector2(0, 0);
-                pacman.Location = destination;
-
-                
+            { 
+                UpdateDirection();
             }
           
 
@@ -196,7 +193,7 @@ namespace PizzaGuy
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
