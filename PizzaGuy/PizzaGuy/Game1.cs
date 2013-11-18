@@ -22,7 +22,6 @@ namespace PizzaGuy
         SpriteBatch spriteBatch;
         Texture2D PacmanSheet;
         PizzaGuy pacman;
-        Vector2 destination;
 
         public Game1()
         {
@@ -76,7 +75,7 @@ namespace PizzaGuy
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         /// 
 
-        
+        //game window is 800 x 480
 
         public void UpdateDirection()
         {
@@ -85,36 +84,37 @@ namespace PizzaGuy
                 case Direction.UP:
                     pacman.Velocity = new Vector2(0, -100);
                     pacman.Rotation = MathHelper.PiOver2;
-                    destination = pacman.Location - new Vector2(0, 32);
+                    pacman.destination = pacman.Location - new Vector2(0, 32);
                     break;
 
                 case Direction.DOWN:
                     pacman.Velocity = new Vector2(0, 100);
                     pacman.Rotation = -MathHelper.PiOver2;
-                    destination = pacman.Location + new Vector2(0, 32);
+                    pacman.destination = pacman.Location + new Vector2(0, 32);
                     break;
 
                 case Direction.LEFT:
                     pacman.Velocity = new Vector2(-100, 0);
                     pacman.Rotation = 0f;
-                    destination = pacman.Location - new Vector2(32, 0);
+                    pacman.destination = pacman.Location - new Vector2(32, 0);
                     break;
                 
                 case Direction.RIGHT:
                     pacman.Velocity = new Vector2(100, 0);
                     pacman.Rotation = MathHelper.Pi;
-                    destination = pacman.Location + new Vector2(32, 0);
+                    pacman.destination = pacman.Location + new Vector2(32, 0);
                     break; 
             }
         }
 
         private void HandleKeyboardInput(KeyboardState keyState)
         {
-
+            pacman.origin = pacman.Location;
             if (keyState.IsKeyDown(Keys.Up))
             {
                 // direction
                 pacman.direction = Direction.UP;
+                
             }
 
             else if(keyState.IsKeyDown(Keys.Down))
@@ -131,14 +131,18 @@ namespace PizzaGuy
             {
                 pacman.direction = Direction.RIGHT;
             }
-
             
             
             
-            if (pacman.Velocity.X > 0 && pacman.Location.X >= destination.X ||
-                pacman.Velocity.X < 0 && pacman.Location.X <= destination.X || 
-                pacman.Velocity.Y > 0 && pacman.Location.Y >= destination.Y ||
-                pacman.Velocity.Y < 0 && pacman.Location.Y <= destination.Y)
+            
+            if (pacman.Velocity.X > 0 && pacman.Location.X >= pacman.destination.X ||
+                pacman.Velocity.X < 0 && pacman.Location.X <= pacman.destination.X || 
+                pacman.Velocity.Y > 0 && pacman.Location.Y >= pacman.destination.Y ||
+                pacman.Velocity.Y < 0 && pacman.Location.Y <= pacman.destination.Y ||
+                pacman.Velocity.X > 0 && pacman.direction == Direction.LEFT || 
+                pacman.Velocity.X < 0 && pacman.direction == Direction.RIGHT || 
+                pacman.Velocity.Y > 0 && pacman.direction == Direction.UP || 
+                pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN)
             { 
                 UpdateDirection();
             }

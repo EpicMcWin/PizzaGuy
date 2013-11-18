@@ -18,7 +18,7 @@ namespace PizzaGuy
         private float frameTime = 0.1f;
         private float timeForCurrentFrame = 0.0f;
 
-        private bool destroyed;
+        
         public bool Destroyed = false;
 
         private Color tintColor = Color.White;
