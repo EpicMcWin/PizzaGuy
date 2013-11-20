@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using xTile;
+using xTile.Display;
 
 namespace PizzaGuy
 {
@@ -22,6 +24,7 @@ namespace PizzaGuy
         SpriteBatch spriteBatch;
         Texture2D PacmanSheet;
         PizzaGuy pacman;
+        Map map;
 
         public Game1()
         {
@@ -51,7 +54,7 @@ namespace PizzaGuy
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             PacmanSheet = Content.Load<Texture2D>("PacmanSprites");
-
+            map = Content.Load<
             pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(114, 13, 38, 39), new Vector2(32,0));
             pacman.AddFrame(new Rectangle(18, 13, 34, 37));
             pacman.AddFrame(new Rectangle(74, 13, 27, 38));
@@ -199,6 +202,7 @@ namespace PizzaGuy
         {
             GraphicsDevice.Clear(Color.Black);
 
+            map.Draw(
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             pacman.Draw(spriteBatch);
