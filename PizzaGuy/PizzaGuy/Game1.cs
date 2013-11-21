@@ -23,8 +23,10 @@ namespace PizzaGuy
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D PacmanSheet;
+        Texture2D breakout;
         PizzaGuy pacman;
         Map map;
+        IDisplayDevice mapDisplayDevice;
 
         public Game1()
         {
@@ -54,8 +56,13 @@ namespace PizzaGuy
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             PacmanSheet = Content.Load<Texture2D>("PacmanSprites");
-            map = Content.Load<
-            pacman = new PizzaGuy(new Vector2(300, 300), PacmanSheet, new Rectangle(114, 13, 38, 39), new Vector2(32,0));
+
+            mapDisplayDevice = new XnaDisplayDevice(Content, GraphicsDevice);
+            map = Content.Load<xTile.Map>("PacmanMap");
+            map.LoadTileSheets(mapDisplayDevice);
+            breakout = Content.Load<Texture2D>("breakout");
+
+            pacman = new PizzaGuy(new Vector2(352, 352), PacmanSheet, new Rectangle(114, 13, 38, 39), new Vector2(32,0));
             pacman.AddFrame(new Rectangle(18, 13, 34, 37));
             pacman.AddFrame(new Rectangle(74, 13, 27, 38));
             pacman.AddFrame(new Rectangle(18, 13, 34, 37));
@@ -79,6 +86,8 @@ namespace PizzaGuy
         /// 
 
         //game window is 800 x 480
+
+        
 
         public void UpdateDirection()
         {
@@ -112,12 +121,10 @@ namespace PizzaGuy
 
         private void HandleKeyboardInput(KeyboardState keyState)
         {
-            pacman.origin = pacman.Location;
             if (keyState.IsKeyDown(Keys.Up))
             {
                 // direction
                 pacman.direction = Direction.UP;
-                
             }
 
             else if(keyState.IsKeyDown(Keys.Down))
@@ -148,6 +155,7 @@ namespace PizzaGuy
                 pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN)
             { 
                 UpdateDirection();
+                //pacman.Location = pacman.destination;
             }
           
 
@@ -157,6 +165,7 @@ namespace PizzaGuy
         private void imposeMovementLimits()
         {
             Vector2 location = pacman.Location;
+            Vector2 center = pacman.Center;
 
             if (location.X < 0)
                 location.X = 0;
@@ -173,6 +182,12 @@ namespace PizzaGuy
                 (480 - pacman.Source.Height))
                 location.Y =
                     (480 - pacman.Source.Height);
+
+            if (center.Y == 256 && location.X == 0)
+                location.X = 800;
+
+            if (center.Y == 256 && location.X == 800)
+                location.X = 0;
 
             pacman.Location = location;
         }
@@ -202,7 +217,7 @@ namespace PizzaGuy
         {
             GraphicsDevice.Clear(Color.Black);
 
-            map.Draw(
+            map.Draw(mapDisplayDevice, viewport, displayOffset, wrapAround);
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             pacman.Draw(spriteBatch);
@@ -210,5 +225,13 @@ namespace PizzaGuy
             base.Draw(gameTime);
             
         }
+
+
+
+        public xTile.Dimensions.Rectangle viewport = new xTile.Dimensions.Rectangle(0, 0, 800, 480);
+
+        public xTile.Dimensions.Location displayOffset { get; set; }
+
+        public bool wrapAround { get; set; }
     }
 }

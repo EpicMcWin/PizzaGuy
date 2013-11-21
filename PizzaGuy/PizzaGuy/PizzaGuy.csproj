@@ -105,6 +105,9 @@
     <Reference Include="System.Net">
       <Private>False</Private>
     </Reference>
+    <Reference Include="tIDE.Plugin">
+      <HintPath>..\PizzaGuyContent\tIDE.Plugin.dll</HintPath>
+    </Reference>
     <Reference Include="xTile">
       <HintPath>..\PizzaGuyContent\xTile.dll</HintPath>
     </Reference>
