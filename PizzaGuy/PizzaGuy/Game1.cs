@@ -23,10 +23,12 @@ namespace PizzaGuy
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Texture2D PacmanSheet;
+        Texture2D PacmanFrames;
         Texture2D breakout;
         PizzaGuy pacman;
         Map map;
         IDisplayDevice mapDisplayDevice;
+        xTile.Tiles.Tile tile;
 
         public Game1()
         {
@@ -61,11 +63,12 @@ namespace PizzaGuy
             map = Content.Load<xTile.Map>("PacmanMap");
             map.LoadTileSheets(mapDisplayDevice);
             breakout = Content.Load<Texture2D>("breakout");
+            PacmanFrames = Content.Load<Texture2D>("PacmanFrames");
 
-            pacman = new PizzaGuy(new Vector2(352, 352), PacmanSheet, new Rectangle(114, 13, 38, 39), new Vector2(32,0));
-            pacman.AddFrame(new Rectangle(18, 13, 34, 37));
-            pacman.AddFrame(new Rectangle(74, 13, 27, 38));
-            pacman.AddFrame(new Rectangle(18, 13, 34, 37));
+            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(10, 25, 28, 28), new Vector2(32,0));
+            pacman.AddFrame(new Rectangle(94, 24, 26, 28));
+            pacman.AddFrame(new Rectangle(58, 24, 24, 28));
+            pacman.AddFrame(new Rectangle(94, 24, 26, 28));
 
         }
 
@@ -155,9 +158,8 @@ namespace PizzaGuy
                 pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN)
             { 
                 UpdateDirection();
-                //pacman.Location = pacman.destination;
+                
             }
-          
 
             imposeMovementLimits();
         }
@@ -165,7 +167,7 @@ namespace PizzaGuy
         private void imposeMovementLimits()
         {
             Vector2 location = pacman.Location;
-            Vector2 center = pacman.Center;
+            //Vector2 center = pacman.Center;
 
             if (location.X < 0)
                 location.X = 0;
@@ -183,17 +185,55 @@ namespace PizzaGuy
                 location.Y =
                     (480 - pacman.Source.Height);
 
-            if (center.Y == 256 && location.X == 0)
-                location.X = 800;
+            if (location.Y == 218 && location.X == 0)
+                location.X = 736;
 
-            if (center.Y == 256 && location.X == 800)
+            if (location.Y == 218 && location.X == 736)
                 location.X = 0;
+            
 
             pacman.Location = location;
         }
 
 
+        public bool CanMove(Direction dir)
+        {
+            Vector2 otherDestination = new Vector2();
+            switch (dir)
+            {
+                case Direction.UP:
+                    //pacman.Velocity = new Vector2(0, -100);
+                    //pacman.Rotation = MathHelper.PiOver2;
+                    pacman.otherDestination = pacman.destination - new Vector2(0, 32);
+                    break;
 
+                case Direction.DOWN:
+                    //pacman.Velocity = new Vector2(0, 100);
+                    //pacman.Rotation = -MathHelper.PiOver2;
+                    pacman.otherDestination = pacman.destination + new Vector2(0, 32);
+                    break;
+
+                case Direction.LEFT:
+                    //pacman.Velocity = new Vector2(-100, 0);
+                    //pacman.Rotation = 0f;
+                    pacman.otherDestination = pacman.destination - new Vector2(32, 0);
+                    break;
+
+                case Direction.RIGHT:
+                    //pacman.Velocity = new Vector2(100, 0);
+                    //pacman.Rotation = MathHelper.Pi;
+                    pacman.otherDestination = pacman.destination + new Vector2(32, 0);
+                    break;
+
+                    tile =  map.layer[0](otherDestination.X / 32, otherDestination.Y / 32);
+
+                    if (tile.Id != "9")
+                    {
+                        return false;
+                    }
+                    return true;
+            }
+        }
             
 
 
