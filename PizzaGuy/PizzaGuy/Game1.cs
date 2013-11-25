@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using xTile;
 using xTile.Display;
+using xTile.Tiles;
 
 namespace PizzaGuy
 {
@@ -28,8 +29,8 @@ namespace PizzaGuy
         PizzaGuy pacman;
         Map map;
         IDisplayDevice mapDisplayDevice;
-        xTile.Tiles.Tile tile;
-
+        Tile tile;
+        xTile.Dimensions.Rectangle viewport;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -62,13 +63,14 @@ namespace PizzaGuy
             mapDisplayDevice = new XnaDisplayDevice(Content, GraphicsDevice);
             map = Content.Load<xTile.Map>("PacmanMap");
             map.LoadTileSheets(mapDisplayDevice);
+            viewport = new xTile.Dimensions.Rectangle(0, 0, 800, 480);
             breakout = Content.Load<Texture2D>("breakout");
             PacmanFrames = Content.Load<Texture2D>("PacmanFrames");
 
-            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(10, 25, 28, 28), new Vector2(32,0));
-            pacman.AddFrame(new Rectangle(94, 24, 26, 28));
-            pacman.AddFrame(new Rectangle(58, 24, 24, 28));
-            pacman.AddFrame(new Rectangle(94, 24, 26, 28));
+            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(70, 4, 28, 28), new Vector2(32,0));
+            pacman.AddFrame(new Rectangle(1, 4, 28, 28));
+            pacman.AddFrame(new Rectangle(0, 7, 28, 28));
+            pacman.AddFrame(new Rectangle(36, 4, 28, 28));
 
         }
 
@@ -155,7 +157,8 @@ namespace PizzaGuy
                 pacman.Velocity.X > 0 && pacman.direction == Direction.LEFT || 
                 pacman.Velocity.X < 0 && pacman.direction == Direction.RIGHT || 
                 pacman.Velocity.Y > 0 && pacman.direction == Direction.UP || 
-                pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN)
+                pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN &&
+                CanMove(pacman.direction))
             { 
                 UpdateDirection();
                 
@@ -224,15 +227,14 @@ namespace PizzaGuy
                     //pacman.Rotation = MathHelper.Pi;
                     pacman.otherDestination = pacman.destination + new Vector2(32, 0);
                     break;
-
-                    tile =  map.layer[0](otherDestination.X / 32, otherDestination.Y / 32);
-
-                    if (tile.Id != "9")
-                    {
-                        return false;
-                    }
-                    return true;
             }
+
+                    tile = map.Layers[0].Tiles[(int)otherDestination.X / 32, (int)otherDestination.Y / 32];
+
+                    if (tile.Id == "9")
+                        return false;
+                    else
+                        return true;
         }
             
 
@@ -257,7 +259,7 @@ namespace PizzaGuy
         {
             GraphicsDevice.Clear(Color.Black);
 
-            map.Draw(mapDisplayDevice, viewport, displayOffset, wrapAround);
+            map.Draw(mapDisplayDevice, viewport);
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             pacman.Draw(spriteBatch);
@@ -265,13 +267,5 @@ namespace PizzaGuy
             base.Draw(gameTime);
             
         }
-
-
-
-        public xTile.Dimensions.Rectangle viewport = new xTile.Dimensions.Rectangle(0, 0, 800, 480);
-
-        public xTile.Dimensions.Location displayOffset { get; set; }
-
-        public bool wrapAround { get; set; }
     }
 }

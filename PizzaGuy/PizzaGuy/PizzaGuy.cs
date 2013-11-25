@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace PizzaGuy
 {
-    enum Direction
+   public enum Direction
     {
         UP,
         DOWN,
@@ -24,7 +24,7 @@ namespace PizzaGuy
     {
         public Direction direction;
         public Vector2 destination;
-        public Vector2 origin;
+        public Vector2 otherDestination;
         public PizzaGuy(
             Vector2 location,
             Texture2D texture,
