@@ -146,22 +146,26 @@ namespace PizzaGuy
             {
                 pacman.direction = Direction.RIGHT;
             }
-            
-            
-            
-            
+
+
+
+
             if (pacman.Velocity.X > 0 && pacman.Location.X >= pacman.destination.X ||
-                pacman.Velocity.X < 0 && pacman.Location.X <= pacman.destination.X || 
+                pacman.Velocity.X < 0 && pacman.Location.X <= pacman.destination.X ||
                 pacman.Velocity.Y > 0 && pacman.Location.Y >= pacman.destination.Y ||
                 pacman.Velocity.Y < 0 && pacman.Location.Y <= pacman.destination.Y ||
-                pacman.Velocity.X > 0 && pacman.direction == Direction.LEFT || 
-                pacman.Velocity.X < 0 && pacman.direction == Direction.RIGHT || 
-                pacman.Velocity.Y > 0 && pacman.direction == Direction.UP || 
-                pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN &&
-                CanMove(pacman.direction))
-            { 
-                UpdateDirection();
-                
+                pacman.Velocity.X > 0 && pacman.direction == Direction.LEFT ||
+                pacman.Velocity.X < 0 && pacman.direction == Direction.RIGHT ||
+                pacman.Velocity.Y > 0 && pacman.direction == Direction.UP ||
+                pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN)
+            {
+                {
+                    if (CanMove(pacman.direction))
+                    {
+                        UpdateDirection();
+                    }
+
+                }
             }
 
             imposeMovementLimits();
@@ -201,37 +205,29 @@ namespace PizzaGuy
 
         public bool CanMove(Direction dir)
         {
-            Vector2 otherDestination = new Vector2();
+            
             switch (dir)
             {
                 case Direction.UP:
-                    //pacman.Velocity = new Vector2(0, -100);
-                    //pacman.Rotation = MathHelper.PiOver2;
                     pacman.otherDestination = pacman.destination - new Vector2(0, 32);
                     break;
 
                 case Direction.DOWN:
-                    //pacman.Velocity = new Vector2(0, 100);
-                    //pacman.Rotation = -MathHelper.PiOver2;
                     pacman.otherDestination = pacman.destination + new Vector2(0, 32);
                     break;
 
                 case Direction.LEFT:
-                    //pacman.Velocity = new Vector2(-100, 0);
-                    //pacman.Rotation = 0f;
                     pacman.otherDestination = pacman.destination - new Vector2(32, 0);
                     break;
 
                 case Direction.RIGHT:
-                    //pacman.Velocity = new Vector2(100, 0);
-                    //pacman.Rotation = MathHelper.Pi;
                     pacman.otherDestination = pacman.destination + new Vector2(32, 0);
                     break;
             }
 
-                    tile = map.Layers[0].Tiles[(int)otherDestination.X / 32, (int)otherDestination.Y / 32];
+                    tile = map.Layers[0].Tiles[(int)pacman.otherDestination.X / 32, (int)pacman.otherDestination.Y / 32];
 
-                    if (tile.Id == "9")
+                    if (tile.TileIndex == 9)
                         return false;
                     else
                         return true;
