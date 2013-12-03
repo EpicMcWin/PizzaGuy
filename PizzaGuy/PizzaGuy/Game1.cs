@@ -59,7 +59,7 @@ namespace PizzaGuy
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             PacmanSheet = Content.Load<Texture2D>("PacmanSprites");
-
+            
             mapDisplayDevice = new XnaDisplayDevice(Content, GraphicsDevice);
             map = Content.Load<xTile.Map>("PacmanMap");
             map.LoadTileSheets(mapDisplayDevice);
@@ -67,7 +67,7 @@ namespace PizzaGuy
             breakout = Content.Load<Texture2D>("breakout");
             PacmanFrames = Content.Load<Texture2D>("PacmanFrames");
 
-            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(70, 4, 28, 28), new Vector2(32,0));
+            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(70, 4, 28, 28), new Vector2(32, 0));
             pacman.AddFrame(new Rectangle(1, 4, 28, 28));
             pacman.AddFrame(new Rectangle(0, 7, 28, 28));
             pacman.AddFrame(new Rectangle(36, 4, 28, 28));
@@ -94,144 +94,35 @@ namespace PizzaGuy
 
         
 
-        public void UpdateDirection()
-        {
-            switch (pacman.direction)
-            {
-                case Direction.UP:
-                    pacman.Velocity = new Vector2(0, -100);
-                    pacman.Rotation = MathHelper.PiOver2;
-                    pacman.destination = pacman.Location - new Vector2(0, 32);
-                    break;
+      
 
-                case Direction.DOWN:
-                    pacman.Velocity = new Vector2(0, 100);
-                    pacman.Rotation = -MathHelper.PiOver2;
-                    pacman.destination = pacman.Location + new Vector2(0, 32);
-                    break;
+        //private void HandleKeyboardInput(KeyboardState keyState)
+        //{
+        //    if (keyState.IsKeyDown(Keys.Up))
+        //    {
+        //        // direction
+        //        pacman.direction = Direction.UP;
+        //    }
 
-                case Direction.LEFT:
-                    pacman.Velocity = new Vector2(-100, 0);
-                    pacman.Rotation = 0f;
-                    pacman.destination = pacman.Location - new Vector2(32, 0);
-                    break;
-                
-                case Direction.RIGHT:
-                    pacman.Velocity = new Vector2(100, 0);
-                    pacman.Rotation = MathHelper.Pi;
-                    pacman.destination = pacman.Location + new Vector2(32, 0);
-                    break; 
-            }
-        }
+        //    else if(keyState.IsKeyDown(Keys.Down))
+        //    {
+        //        pacman.direction = Direction.DOWN;
+        //    }
 
-        private void HandleKeyboardInput(KeyboardState keyState)
-        {
-            if (keyState.IsKeyDown(Keys.Up))
-            {
-                // direction
-                pacman.direction = Direction.UP;
-            }
+        //    else if (keyState.IsKeyDown(Keys.Left))
+        //    {
+        //        pacman.direction = Direction.LEFT;
+        //    }
 
-            else if(keyState.IsKeyDown(Keys.Down))
-            {
-                pacman.direction = Direction.DOWN;
-            }
-
-            else if (keyState.IsKeyDown(Keys.Left))
-            {
-                pacman.direction = Direction.LEFT;
-            }
-
-            else if (keyState.IsKeyDown(Keys.Right))
-            {
-                pacman.direction = Direction.RIGHT;
-            }
+        //    else if (keyState.IsKeyDown(Keys.Right))
+        //    {
+        //        pacman.direction = Direction.RIGHT;
+        //    }
 
 
 
 
-            if (pacman.Velocity.X > 0 && pacman.Location.X >= pacman.destination.X ||
-                pacman.Velocity.X < 0 && pacman.Location.X <= pacman.destination.X ||
-                pacman.Velocity.Y > 0 && pacman.Location.Y >= pacman.destination.Y ||
-                pacman.Velocity.Y < 0 && pacman.Location.Y <= pacman.destination.Y ||
-                pacman.Velocity.X > 0 && pacman.direction == Direction.LEFT ||
-                pacman.Velocity.X < 0 && pacman.direction == Direction.RIGHT ||
-                pacman.Velocity.Y > 0 && pacman.direction == Direction.UP ||
-                pacman.Velocity.Y < 0 && pacman.direction == Direction.DOWN)
-            {
-                {
-                    if (CanMove(pacman.direction))
-                    {
-                        UpdateDirection();
-                    }
 
-                }
-            }
-
-            imposeMovementLimits();
-        }
-
-        private void imposeMovementLimits()
-        {
-            Vector2 location = pacman.Location;
-            //Vector2 center = pacman.Center;
-
-            if (location.X < 0)
-                location.X = 0;
-
-            if (location.X >
-                (800 - pacman.Source.Width))
-                location.X =
-                    (800 - pacman.Source.Width);
-
-            if (location.Y < 0)
-                location.Y = 0;
-
-            if (location.Y >
-                (480 - pacman.Source.Height))
-                location.Y =
-                    (480 - pacman.Source.Height);
-
-            if (location.Y == 218 && location.X == 0)
-                location.X = 736;
-
-            if (location.Y == 218 && location.X == 736)
-                location.X = 0;
-            
-
-            pacman.Location = location;
-        }
-
-
-        public bool CanMove(Direction dir)
-        {
-            
-            switch (dir)
-            {
-                case Direction.UP:
-                    pacman.otherDestination = pacman.destination - new Vector2(0, 32);
-                    break;
-
-                case Direction.DOWN:
-                    pacman.otherDestination = pacman.destination + new Vector2(0, 32);
-                    break;
-
-                case Direction.LEFT:
-                    pacman.otherDestination = pacman.destination - new Vector2(32, 0);
-                    break;
-
-                case Direction.RIGHT:
-                    pacman.otherDestination = pacman.destination + new Vector2(32, 0);
-                    break;
-            }
-
-                    tile = map.Layers[0].Tiles[(int)pacman.otherDestination.X / 32, (int)pacman.otherDestination.Y / 32];
-
-                    if (tile.TileIndex == 9)
-                        return false;
-                    else
-                        return true;
-        }
             
 
 
@@ -242,7 +133,7 @@ namespace PizzaGuy
                 this.Exit();
 
             // TODO: Add your update logic here
-            HandleKeyboardInput(Keyboard.GetState());
+            //HandleKeyboardInput(Keyboard.GetState());
             pacman.Update(gameTime);
             base.Update(gameTime);
         }
