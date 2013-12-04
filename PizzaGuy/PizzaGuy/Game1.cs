@@ -67,7 +67,7 @@ namespace PizzaGuy
             breakout = Content.Load<Texture2D>("breakout");
             PacmanFrames = Content.Load<Texture2D>("PacmanFrames");
 
-            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(70, 4, 28, 28), new Vector2(32, 0));
+            pacman = new PizzaGuy(new Vector2(352, 352), PacmanFrames, new Rectangle(70, 4, 28, 28), new Vector2(32, 0), map.GetLayer("untitled layer"));
             pacman.AddFrame(new Rectangle(1, 4, 28, 28));
             pacman.AddFrame(new Rectangle(0, 7, 28, 28));
             pacman.AddFrame(new Rectangle(36, 4, 28, 28));

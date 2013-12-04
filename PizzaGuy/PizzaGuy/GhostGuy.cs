@@ -27,7 +27,7 @@ namespace PizzaGuy
             Vector2 velocity,
             xTile.Layers.Layer map,
             PizzaGuy pacman)
-            : base(location, texture, initialFrame, velocity)
+            : base(location, texture, initialFrame, velocity, map)
         {
             this.pacman = pacman;
         }

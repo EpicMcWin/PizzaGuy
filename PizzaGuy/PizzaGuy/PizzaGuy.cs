@@ -20,41 +20,14 @@ namespace PizzaGuy
             Vector2 location,
             Texture2D texture,
             Rectangle initialFrame,
-            Vector2 velocity) : base(location, texture, initialFrame, velocity)
+            Vector2 velocity,
+            xTile.Layers.Layer map)
+            : base(location, texture, initialFrame, velocity, map)
         {
             
         }
 
-         private void imposeMovementLimits()
-        {
-            Vector2 location = Location;
-            //Vector2 center = pacman.Center;
-
-            if (location.X < 0)
-                location.X = 0;
-
-            if (location.X >
-                (800 - Source.Width))
-                location.X =
-                    (800 - Source.Width);
-
-            if (location.Y < 0)
-                location.Y = 0;
-
-            if (location.Y >
-                (480 - Source.Height))
-                location.Y =
-                    (480 - Source.Height);
-
-            if (location.Y == 218 && location.X == 0)
-                location.X = 736;
-
-            if (location.Y == 218 && location.X == 736)
-                location.X = 0;
-            
-
-            Location = location;
-        }
+         
 
         public override void Update(GameTime gameTime)
         {
@@ -98,11 +71,15 @@ namespace PizzaGuy
                     {
                         UpdateDirection();
                     }
+                    else
+                    {
+                        velocity = new Vector2(0, 0);
+                        
+                    }
 
                 }
             }
 
-            imposeMovementLimits();
         }
         }
     }
